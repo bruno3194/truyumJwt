@@ -3,6 +3,7 @@ package com.example.truyum.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -51,7 +52,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.csrf().disable()
 				// dont authenticate this particular request
-				.authorizeRequests().antMatchers("/authenticate", "/register").permitAll()
+				.authorizeRequests()
+				.antMatchers("/authenticate", "/register").permitAll()
+				.antMatchers(HttpMethod.PUT,"/menu-items").hasRole("admin")
+				.antMatchers(HttpMethod.POST,"/carts/**").hasRole("user")
+				.antMatchers(HttpMethod.DELETE,"/carts/**").hasRole("user")
 				// all other requests need to be authenticated
 				.anyRequest().authenticated()
 				.and()

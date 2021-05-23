@@ -27,11 +27,15 @@ public class MenuItemDaoImpl implements MenuItemDao {
 
     @Override
     public List<MenuItem> getMenuItemListAdmin() {
+    	
+ 
         return menuItemList;
     }
 
     @Override
     public List<MenuItem> getMenuItemListCustomer() {
+    	for(MenuItem menuItem:menuItemList)
+        {  menuRepository.save(menuItem);}
         return menuRepository.findAll();
     }
 
